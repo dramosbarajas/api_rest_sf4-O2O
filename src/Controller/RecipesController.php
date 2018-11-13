@@ -5,6 +5,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
 use \GuzzleHttp\Client;
+use Symfony\Component\HttpFoundation\Request;
 
 class RecipesController extends AbstractController
 {
@@ -26,7 +27,7 @@ class RecipesController extends AbstractController
             $response =  json_decode( $response->getBody()->getContents() );
             $data = json_decode(json_encode($response->results), true);
             return $this->render(
-                'recipes/keyword/keyword.html.twig',
+                'recipes/keyword/responseKeyword.html.twig',
                 array('recipes' => $data)
             );
         } else {
@@ -41,9 +42,10 @@ class RecipesController extends AbstractController
     /**
      * @Route("/recipes/ingredients/{ingredients}", name="recipesByIngredients", methods={"GET","HEAD"})
      */
-    public function recipesByIngredients($ingredients)
+    public function recipesByIngredients(Request $request)
 
     {
+
         $client = new Client([
             'base_uri' => $this->uri,
             'timeout'  => 2.0,
@@ -54,7 +56,7 @@ class RecipesController extends AbstractController
             $data = json_decode(json_encode($response->results), true);
             var_dump($data); die;
             return $this->render(
-                'recipes/ingredient/ingredient.html.twig',
+                'recipes/ingredient/responseIngredient.html.twig',
                 array('recipes' => $data)
             );
         } else {

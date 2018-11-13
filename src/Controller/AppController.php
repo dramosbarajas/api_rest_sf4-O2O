@@ -20,7 +20,8 @@ class AppController extends AbstractController
      */
     public function appKeyword()
     {
-        return $this->json(array('username' => 'jane.doe'));
+        return $this->render('recipes/keyword/formKeyword.html.twig');
+
     }
 
     /**
@@ -28,7 +29,8 @@ class AppController extends AbstractController
      */
     public function appIngredients()
     {
-        return $this->json(array('username' => 'ingredientes'));
+        return $this->render('recipes/ingredient/formIngredient.html.twig');
+
     }
 
 }
