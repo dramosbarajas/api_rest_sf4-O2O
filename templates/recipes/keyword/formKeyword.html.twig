@@ -3,14 +3,21 @@
 {% block content %}
     <div class="container">
         <div class="jumbotron">
-            <h1 class="display-4 text-center">Consulta de recetas</h1>
-            <p class="lead text-center">Consulta de recetas por ingredientes o por palabra clave</p>
+            <h1 class="display-4 text-center">Receta por palabra clave</h1>
+            <p class="lead text-center">Introduzca el nombre de la receta que desea buscar</p>
             <hr class="my-4">
-            <p class="text-center">Seleccione una de las siguientes opciones</p>
-            <p class="lead center col-lg-8 offset-lg-3">
-                <a class="btn btn-primary btn-lg" href="/keyword" role="button">Recetas por palabra clave</a>
-                <a class="btn btn-primary btn-lg" href="/ingredient" role="button">Recetas por ingredientes</a>
-            </p>
+            <p class="text-center">Nombre receta</p>
+            <div class="lead center col-lg-8 offset-lg-2">
+                <form action="/recipes/keyword" method="post">
+                    <div class="form-group">
+                        <label for="ingredientes">Receta</label>
+                        <input type="text" class="form-control" name="recipe" required=true placeholder="Introducir ingredientes">
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-info btn-block">Consultar recetas</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 {% endblock %}

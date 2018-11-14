@@ -3,12 +3,26 @@
 
 {% block content %}
     <div class="container">
+
         <div class="row">
-            <ul>
+            <div class="col-md-12">
+                <h2 class="text-center mt-4">Listado de recetas por palabra clave</h2>
+            </div>
+
+        {% if recipes == true %}
                 {% for recipe in recipes %}
-                    <li>{{ recipe.title }}</li>
+                    <div class="card" style="width: 18rem; height: 25rem;">
+                        <img class="card-img-top" src="{{ recipe.thumbnail }}" alt="Imágen no disponible">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ recipe.title }}</h5>
+                            <p class="card-text">{{ recipe.ingredients }}</p>
+                            <a href="{{ recipe.href }}" class="btn btn-primary btn-block"> Link receta</a>
+                        </div>
+                    </div>
                 {% endfor %}
-            </ul>
+        {% else %}
+            <h1 class="text-center mt-4"> No existen datos para la consulta.</h1>
+        {% endif %}
         </div>
     </div>
 {% endblock %}

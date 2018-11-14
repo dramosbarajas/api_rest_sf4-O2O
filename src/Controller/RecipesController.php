@@ -10,29 +10,30 @@ use Symfony\Component\HttpFoundation\Request;
 class RecipesController extends AbstractController
 {
 
-    private $uri = 'http://www.recipepuppy.com/api/';
     /**
-     * @Route("/recipes/keyword/{keyword}", name="recipesByKeyword", methods={"GET","HEAD"})
+     * @Route("/recipes/keyword", methods="POST")
+     *
      */
-    public function recipesByKeyword($keyword)
+
+    public function recipesByKeyword(Request $request)
     {
+        //Comprobamos que la petición llega por POST
 
-        $client = new Client([
-            'base_uri' => $this->uri,
-            'timeout'  => 2.0,
-        ]);
+        $type = 'q'; //Comodin para recetas
 
-        $response = $client->request('GET', '?q='. $keyword );
-        if($response->getStatusCode() == 200){
-            $response =  json_decode( $response->getBody()->getContents() );
-            $data = json_decode(json_encode($response->results), true);
+        if ($request->isMethod('post')) {
+            $keyword = $this->getRequest($request); //Recuperamos del payload el valor de búsqueda.
+            $response = $this->checkResponse($this->call($type,$keyword['recipe']));//Llamamos a la función que compone la llamada y la ejecuta.
+        };
+
+        //si la respuesta es true envia ok false fallo.
+        if($response){
             return $this->render(
                 'recipes/keyword/responseKeyword.html.twig',
-                array('recipes' => $data)
+                array('recipes' => $response->results)
             );
         } else {
-            return response()->json([
-                'status' => $response->getStatusCode(),
+            return $this->json([
                 'msj' => 'Algo ha fallado!'
             ]);
         }
@@ -40,32 +41,59 @@ class RecipesController extends AbstractController
     }
 
     /**
-     * @Route("/recipes/ingredients/{ingredients}", name="recipesByIngredients", methods={"GET","HEAD"})
+     * @Route("/recipes/ingredients", methods="post")
      */
-    public function recipesByIngredients(Request $request)
+    public function recipesbyingredients(request $request)
 
     {
 
-        $client = new Client([
-            'base_uri' => $this->uri,
-            'timeout'  => 2.0,
-        ]);
-        $response = $client->request('GET', '?i='. $ingredients );
-        if($response->getStatusCode() == 200){
-            $response =  json_decode( $response->getBody()->getContents() );
-            $data = json_decode(json_encode($response->results), true);
-            var_dump($data); die;
+        $type = 'i';//Comodin para ingredientes
+        if ($request->ismethod('post')) {
+            $keyword = $this->getrequest($request); //recuperamos del payload el valor de búsqueda.
+            $response = $this->checkResponse($this->call($type,$keyword['ingredients']));//llamamos a la función que compone la llamada, la ejecuta y comprueba la respuesta.
+        };
+
+        //si la respuesta es true envia ok false fallo.
+        if($response){
             return $this->render(
-                'recipes/ingredient/responseIngredient.html.twig',
-                array('recipes' => $data)
+                'recipes/ingredient/responseingredient.html.twig',
+                array('recipes' => $response->results)
             );
         } else {
-            return response()->json([
-                'status' => $response->getStatusCode(),
-                'msj' => 'Algo ha fallado!'
+            return $this->json([
+                'msj' => 'algo ha fallado!'
             ]);
         }
     }
 
+    //Recupera los parametros del post
+    public  function getRequest ($request) {
+        parse_str($request->getContent(), $data);
+        return $data;
+    }
+
+    //Realiza la llamada al api externo.
+    public function call ($type,$search){
+        //Variable para la la url de la llamada
+
+        $uri = 'http://www.recipepuppy.com/api/';
+
+        $client = new Client([
+            'base_uri' => $uri,
+            'timeout'  => 2.0,
+        ]);
+
+        $response = $client->request('GET', '?' . $type .'='. $search );
+
+        return $response;
+    }
+
+    public function checkResponse ($response) {
+        if($response->getstatuscode() == 200){
+            return $response =  json_decode( $response->getBody()->getContents() );
+        };
+
+        return false;
+    }
 
 }

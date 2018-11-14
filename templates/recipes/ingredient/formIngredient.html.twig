@@ -7,17 +7,17 @@
             <p class="lead text-center">Introduzca los ingredientes separados por comas (ajo,cebolla,tomate)</p>
             <hr class="my-4">
             <p class="text-center">Introducir los ingredientes</p>
-            <p class="lead center col-lg-8 offset-lg-3">
-            <form action="/recipes/ingredients/" method="GET">
+            <div class="lead center col-lg-8 offset-lg-2">
+            <form action="/recipes/ingredients" method="post">
                 <div class="form-group">
                     <label for="ingredientes">Ingredientes</label>
-                    <input type="text" class="form-control" id="_ingredients" required=true placeholder="Introducir ingredientes">
+                    <input type="text" class="form-control" name="ingredients" required=true placeholder="Introducir ingredientes">
                 </div>
                 <div class="form-group">
                     <button type="submit" class="btn btn-info btn-block">Consultar recetas</button>
                 </div>
             </form>
-            </p>
+            </div>
         </div>
     </div>
 {% endblock %}

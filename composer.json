@@ -7,6 +7,7 @@
         "ext-iconv": "*",
         "eightpoints/guzzle-bundle": "^7.4",
         "guzzlehttp/guzzle": "^6.3",
+        "jms/serializer-bundle": "^2.4",
         "sensio/framework-extra-bundle": "^5.2",
         "symfony/console": "4.1.*",
         "symfony/flex": "^1.1",
